@@ -26,5 +26,55 @@
 		.file_container {
 			margin: 2rem 0;
 		}
+
+		.multi_artist {
+			display: block !important;
+			z-index: 80;
+			div {
+				max-width: 90%;
+			}
+
+			.add_btn {
+				float:inline-start;
+				background-color: var(--white);
+
+				svg {
+					background-color: var(--light-white);
+					color: var(--black);
+					width: 2rem;
+					height: 2rem;
+					margin: 0 2rem;
+					padding: 0.5rem;
+				}
+
+				&:hover {
+					// color: var(--white);
+					svg {
+						background-color: #d9d9d9;
+					}
+				}
+			}
+
+			.artista {
+				width: 33%;
+
+				.close_btn{
+					background-color: #f2f2f2;
+					margin-top: 3%;
+					margin-left: calc(45%);
+				}
+				
+				.close_btn:hover{
+					background-color: #bfbfbf;
+				}
+
+				svg {
+					width: 2rem;
+					height: 2rem;
+					color: var(--black);
+				}
+			}
+		}
+
 	}
 }

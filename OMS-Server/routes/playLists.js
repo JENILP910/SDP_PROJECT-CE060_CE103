@@ -33,7 +33,7 @@ router.put("/edit/:id", [validateObjectId, auth], async (req, res) => {
 	if (!playlist) return res.status(404).send({ message: "Playlist Not Found" });
 
 	const user = await User.findById(req.user._id);
-	if (!user._id.equals(playlist.user))
+	if (!user._id.equals(playlist.usrid))
 		return res.status(403).send({ message: "You don't have Access to Edit!" });
 
 	playlist.name = req.body.name;
@@ -101,7 +101,7 @@ router.get("/favourite", auth, async (req, res) => {
 // get random playlists
 // router.get("/random", auth, async (req, res) => {
 router.get("/random", async (req, res) => {
-	const playlists = await PlayList.aggregate([{ $sample: { size: 10 } }]);
+	const playlists = await PlayList.aggregate([{ $sample: { size: 12 } }]);
 	console.log("random");
 	res.status(200).send({ data: playlists });
 });
@@ -131,6 +131,7 @@ router.get("/:id", [validateObjectId, auth], async (req, res) => {
 
 // delete playlist by id
 router.delete("/:id", [validateObjectId, auth], async (req, res) => {
+	console.log("Here");
 	const user = await User.findById(req.user._id);
 	const playlist = await PlayList.findById(req.params.id);
 	if (!user._id.equals(playlist.usrid)){

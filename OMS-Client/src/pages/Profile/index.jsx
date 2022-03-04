@@ -92,6 +92,7 @@ const Profile = () => {
 						label="Your Pen Name"
 						placeholder="Enter a profile name"
 						name="name"
+						maxlen={10}
 						handleInputState={handleInputState}
 						schema={schema.name}
 						handleErrorState={handleErrorState}
@@ -108,6 +109,7 @@ const Profile = () => {
 								label="Date"
 								placeholder="DD"
 								name="date"
+								maxlen={2}
 								value={data.date}
 								handleInputState={handleInputState}
 								required={true}
@@ -115,10 +117,10 @@ const Profile = () => {
 						</div>
 						<div className={styles.month}>
 							<Select
-								name="month"
-								handleInputState={handleInputState}
 								label="Month"
 								placeholder="Months"
+								name="month"
+								handleInputState={handleInputState}
 								options={months}
 								value={data.month}
 								required={true}
@@ -129,6 +131,7 @@ const Profile = () => {
 								label="Year"
 								placeholder="YYYY"
 								name="year"
+								maxlen={4}
 								value={data.year}
 								handleInputState={handleInputState}
 								required={true}

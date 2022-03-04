@@ -22,6 +22,7 @@ const TextField = ({
 			const errorMessage = validateProperty(input);
 			if (handleErrorState) handleErrorState(input.name, errorMessage);
 		}
+		console.log(input.name);
 		handleInputState(input.name, input.value);
 	};
 

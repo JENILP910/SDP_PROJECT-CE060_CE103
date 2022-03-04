@@ -5,7 +5,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
 	const { currentSong } = useSelector((state) => state.audioPlayer);
 
 	const styles = {
-		padding: currentSong ? "6rem 0 10rem 26rem" : "6rem 0 0 26rem",
+		padding: currentSong ? "5.5rem 0 9rem 22rem" : "5.5rem 0 0 26rem",
 		backgroundColor: "#181818",
 		color: "#ffffff",
 		minHeight: "calc(100vh - 6rem)",
@@ -16,7 +16,6 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
 			{...rest}
 			render={(props) =>
 				user ? (
-				// true ? (
 					<div style={styles}>
 						<Component {...props} />
 					</div>

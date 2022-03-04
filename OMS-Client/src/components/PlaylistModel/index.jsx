@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import TextField from "../Inputs/TextField";
+import { createPlayList } from "../../redux/playListSlice/apiCalls";
 import FileInput from "../Inputs/FileInput";
 import Button from "../Button";
 import axiosInstance from "../../redux/axiosInstance";
@@ -9,13 +11,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import defaultImg from "../../images/music.png";
 import styles from "./styles.module.scss";
 
-const PlaylistModel = ({ closeModel, playlist }) => {
+const PlaylistModel = ({ closeModel, playlist, isupdate }) => {
 	const [data, setData] = useState({
 		name: "",
 		desc: "",
 		img: "",
 	});
 	const [isFetching, setIsFetching] = useState(false);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		setData({ name: playlist.name, desc: playlist.desc, img: playlist.img });
@@ -29,9 +32,20 @@ const PlaylistModel = ({ closeModel, playlist }) => {
 		e.preventDefault();
 		try {
 			setIsFetching(true);
-			const url = process.env.REACT_APP_API_URL + `/playlists/edit/${playlist._id}`;
-			const { data: res } = await axiosInstance.put(url, data);
-			toast.success(res.message);
+			if(isupdate){
+				const url = process.env.REACT_APP_API_URL + `/playlists/edit/${playlist._id}`;
+				const { data: res } = await axiosInstance.put(url, data);
+				toast.success(res.message);
+			}
+			else{
+				playlist.name = data.name;
+				playlist.desc = data.desc;
+				playlist.img = data.img;
+				const url = process.env.REACT_APP_API_URL + `/playlists/c`;
+				createPlayList(data, dispatch);
+				const { data: res } = await axiosInstance.post(url, playlist);
+				toast.success(res.message);
+			}
 			setIsFetching(false);
 			window.location.reload();
 		} catch (error) {
@@ -46,19 +60,21 @@ const PlaylistModel = ({ closeModel, playlist }) => {
 				<CloseIcon />
 			</IconButton>
 			<div className={styles.form_container}>
-				<h1>Edit Details</h1>
+				{isupdate ? <h1>Edit Details</h1> : <h1>Create PlayList</h1>}
 				<div className={styles.input_container}>
 					<TextField
 						label="Name"
 						name="name"
+						maxlen={16}
 						value={data.name}
 						handleInputState={handleInputState}
-					/>
+						/>
 				</div>
 				<div className={styles.input_container}>
 					<TextField
 						label="Description"
 						name="desc"
+						maxlen={64}
 						value={data.desc}
 						handleInputState={handleInputState}
 					/>

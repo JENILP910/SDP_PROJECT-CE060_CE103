@@ -28,7 +28,7 @@ axiosInstance.interceptors.request.use(
 			error.response.status < 500
 		) {
 			// toast.error(error.response.data.message);
-			toast.error(console.log(process.env.REACT_APP_API_URL),error.response.data.message);
+			toast.error(console.log(process.env.REACT_APP_API_URL), error.response.data.message);
 		}
 		else {
 			console.log(error);

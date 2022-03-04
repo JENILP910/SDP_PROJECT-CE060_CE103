@@ -11,6 +11,7 @@
 	}
 
 	.left {
+		max-width: 21rem;
 		display: flex;
 		flex: 1;
 
@@ -40,6 +41,7 @@
 	}
 	.center {
 		flex: 1;
+		width: 10rem;
 
 		p {
 			text-align: center;
@@ -53,6 +55,7 @@
 		}
 	}
 	.right {
+		max-width: 11rem;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;

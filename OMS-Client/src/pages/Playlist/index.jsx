@@ -10,7 +10,6 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./styles.module.scss";
-import key from "../../key";
 
 const Playlist = () => {
 	const [playlist, setPlaylist] = useState({});
@@ -26,7 +25,7 @@ const Playlist = () => {
 	const getPlaylistSongs = async (id) => {
 		try {
 			setIsFetching(true);
-			const url = key.apiurl + "/playlists/" + id;
+			const url = process.env.REACT_APP_API_URL + "/playlists/" + id;
 			const { data } = await axiosInstance.get(url);
 			setPlaylist(data.data.playlist);
 			setSongs(data.data.songs);
@@ -117,8 +116,9 @@ const Playlist = () => {
 					</div>
 					{model && (
 						<PlaylistModel
-							closeModel={() => setModel(true)}
+							closeModel={() => setModel(false)}
 							playlist={playlist}
+							isupdate = {true}
 						/>
 					)}
 				</Fragment>

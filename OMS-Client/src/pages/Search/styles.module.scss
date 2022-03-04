@@ -44,15 +44,73 @@
 		margin: 2rem;
 		display: flex;
 		z-index: 2;
+		font-size: 1.6rem;
+		font-weight: 500;
+		justify-content: space-between;
+
+		h1 {
+			padding-left: 3rem;
+			// min-width: 100%;
+		}
 
 		.songs_container {
-			flex: 2;
+			min-width: 60rem;
+			flex: 1;
+
+			.left {
+				width: 30%;
+				display: inline-flex;
+				flex: 1;
+				padding-left: 5rem;
+				text-transform: uppercase;
+
+				p {
+					margin: 0;
+				}
+			}
+		
+			.center {
+				width: 38%;
+				flex: 1;
+				display: inline-flex;
+				justify-content: center;
+				text-transform: uppercase;
+
+		
+				p {
+					margin: 0;
+				}
+			}
+		
+			.right {
+				width: 18%;
+				flex: 1;
+				display: inline-flex;
+				justify-content: flex-end;
+				padding-right: 1rem;
+
+				svg {
+					width: 2.3rem;
+					height: 2.3rem;
+				}
+			}
 		}
 
 		.playlists_container {
 			display: flex;
 			flex-wrap: wrap;
-			flex: 2;
+			flex: 1;
+
+			h1 {
+				min-width: 100%;
+			}
+		}
+
+		.underline {
+			width: 90%;
+			margin: 1rem 5%;
+			height: 0.1rem;
+			background-color: var(--light-white);
 		}
 	}
 }

@@ -3,7 +3,6 @@ import { CircularProgress } from "@mui/material";
 import axiosInstance from "../../redux/axiosInstance";
 import Playlist from "../../components/Playlist";
 import styles from "./styles.module.scss";
-import key from "../../key";
 // import playlistimg from "../../images/rock.jpg";
 
 // const firstPlaylists1 = [
@@ -18,9 +17,9 @@ const Home = () => {
 	const getRandomPlaylists = async () => {
 		try {
 			setIsFetching(true);
-			const url = key.apiurl + "/playlists/random";
+			const url = process.env.REACT_APP_API_URL + "/playlists/random";
 			const { data } = await axiosInstance.get(url);
-			const array1 = data.data.splice(0, 4);
+			const array1 = data.data.splice(0, 6);
 			const array2 = data.data.splice(0, 10);
 			setFirstPlaylists(array1);
 			setSecondPlaylists(array2);

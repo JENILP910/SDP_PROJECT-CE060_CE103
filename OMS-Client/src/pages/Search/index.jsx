@@ -4,6 +4,7 @@ import Song from "../../components/Song";
 import Playlist from "../../components/Playlist";
 import { IconButton, CircularProgress } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ClearIcon from "@mui/icons-material/Clear";
 import styles from "./styles.module.scss";
 import key from "../../key";
@@ -39,6 +40,7 @@ const Search = () => {
 				<input
 					type="text"
 					placeholder="Search for songs and playlists"
+					maxLength={24}
 					onChange={handleSearch}
 					value={search}
 					autoFocus
@@ -54,18 +56,36 @@ const Search = () => {
 			)}
 			{Object.keys(results).length !== 0 && (
 				<div className={styles.results_container}>
-					{results.songs.length !== 0 && (
-						<div className={styles.songs_container}>
-							{results.songs.map((song) => (
-								<Fragment key={song._id}>
-									<Song song={song} />
-								</Fragment>
-							))}
+						{results.songs.length !== 0 && (
+						<div>
+							<h1>Songs</h1>
+							<div className={styles.songs_container}>
+								<div className={styles.left}>
+									{/* <span>#</span> */}
+									<p>Title</p>
+								</div>
+								<div className={styles.center}>
+									<p>Artist</p>
+								</div>
+								<div className={styles.right}>
+									<AccessTimeIcon />
+								</div>
+								<div className={styles.underline}></div>
+								{results.songs.map((song) => (
+									<Fragment key={song._id}>
+										<Song song={song} />
+									</Fragment>
+								))}
+							</div>
 						</div>
-					)}
+						)}
 					{results.playlists.length !== 0 && (
-						<div className={styles.playlists_container}>
-							<Playlist playlists={results.playlists} />
+						<div>
+							<h1>PlayLists</h1>
+							<div className={styles.underline}></div>
+							<div className={styles.playlists_container}>
+								<Playlist playlists={results.playlists} />
+							</div>
 						</div>
 					)}
 				</div>

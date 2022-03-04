@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { createSong, updateSong } from "../../../redux/songsSlice/apiCalls";
@@ -7,6 +7,9 @@ import Joi from "joi";
 import TextField from "../../Inputs/TextField";
 import FileInput from "../../Inputs/FileInput";
 import Button from "../../Button";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
 import { Paper } from "@mui/material";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import ImageIcon from "@mui/icons-material/Image";
@@ -15,7 +18,7 @@ import styles from "./styles.module.scss";
 const SongForm = () => {
 	const [data, setData] = useState({
 		name: "",
-		artist: "",
+		artist: ["aa", "bb", ""],
 		img: null,
 		song: null,
 		duration: 0,
@@ -42,7 +45,8 @@ const SongForm = () => {
 
 	const schema = {
 		name: Joi.string().required().label("Name"),
-		artist: Joi.string().required().label("Artist"),
+		artist: Joi.array().items(Joi.string()).required().label("Artist"),
+		// artist: Joi.string().required().label("Artist"),
 		// song: Joi.string().required().label("Song"),
 		// img: Joi.string().required().label("Image"),
 		song: Joi.any().label("Song"),
@@ -52,6 +56,7 @@ const SongForm = () => {
 	};
 
 	const handleInputState = (name, value) => {
+		console.log("called");
 		setData((prev) => ({ ...prev, [name]: value }));
 	};
 
@@ -78,6 +83,115 @@ const SongForm = () => {
 		}
 	};
 
+	const Artist = ({data, handleInputState, handleErrorState}) => {
+		const [adata, setaData] = useState({
+			ad0: data.artist[0],
+			ad1: data.artist[1],
+			ad2: data.artist[2],
+		});
+		// const [adata, adispatch] = useReducer();
+
+		const [ a0, setA0 ] = useState(1);
+		const [ a1, setA1 ] = useState(false);
+		const [ a2, setA2 ] = useState(false);
+
+		const schema = {
+			ad0: Joi.string().required().label("ad0"),
+			ad1: Joi.string().label("ad1"),
+			ad2: Joi.string().label("ad2"),
+		};
+
+		const handleInStat = (name, value) => {
+			console.log("called");
+			setaData((prev) => ({ ...prev, [name]: value }));
+			handleInputState("artist", adata);
+			console.log(adata);
+		};
+		
+		const inc = ((k, i, j) => {
+			console.log(k)
+			if(k < 3){
+				setA0(a0 + 1);
+				i ? setA2(true) : setA1(true);
+			}
+		})
+		
+		const dec = ((seta) => {
+			console.log(a0)
+			seta(false);
+			setA0(a0 - 1);
+		})
+
+		useEffect(() => {
+			console.log(data);
+			if(data.artist[1] !== ""){
+				setA0(2);
+				setA1(true);
+				if(data.artist[2] !==""){
+					setA0(3);
+					setA2(true);
+				}
+			}
+		},[data])
+		
+		return (
+			<div className={styles.multi_artist}>
+				<div>
+					<TextField
+						name="artist"
+						label="Artist Name1"
+						handleInputState={handleInStat}
+						required={true}
+						value={adata.ad0}
+						handleErrorState={handleErrorState}
+						schema={schema.ad0}
+						error={errors.artist}
+					/>
+				</div>
+				{a0 < 3 &&
+					<IconButton className={styles.add_btn} onClick={() => { inc(a0, a1)}}>
+						<AddIcon />
+					</IconButton>
+				}
+
+				{a1 &&
+					<div className={styles.artista}>
+						<TextField
+							name="artist"
+							label="Artist Name2"
+							handleInputState={handleInStat}
+							required={true}
+							value={adata.ad1}
+							handleErrorState={handleErrorState}
+							schema={schema.ad1}
+							// error={errors.artist}
+						/>
+						<IconButton className={styles.close_btn} onClick={() => {dec(setA1)}}>
+							<CloseIcon />
+						</IconButton>
+					</div>
+				}
+				{a2 &&
+					<div className={styles.artista}>
+					<TextField
+						name="artist"
+						label="Artist Name3"
+						handleInputState={handleInStat}
+						required={true}
+						value={adata.ad2}
+						handleErrorState={handleErrorState}
+						schema={schema.ad2}
+						// error={errors.artist}
+					/>
+					<IconButton className={styles.close_btn} onClick={() => {dec(setA2)}}>
+						<CloseIcon />
+					</IconButton>
+				</div>
+				}
+			</div>
+		)
+	}
+
 	return (
 		<div className={styles.container}>
 			<Paper className={styles.form_container}>
@@ -98,15 +212,19 @@ const SongForm = () => {
 						/>
 					</div>
 					<div className={styles.input_container}>
-						<TextField
+						{/* <TextField
 							name="artist"
-							label="Artist name"
+							label="Artist Name"
 							handleInputState={handleInputState}
 							required={true}
 							value={data.artist}
 							handleErrorState={handleErrorState}
 							schema={schema.artist}
 							error={errors.artist}
+						/> */}
+						<Artist data={data}
+								handleInputState={handleInputState}
+								handleErrorState={handleErrorState}
 						/>
 					</div>
 					<div className={styles.file_container}>

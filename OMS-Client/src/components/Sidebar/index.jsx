@@ -1,10 +1,10 @@
-import { Fragment } from "react";
+import { useState, Fragment } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { createPlayList } from "../../redux/playListSlice/apiCalls";
+import { useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
+import PlaylistModel from "../../components/PlaylistModel";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import AddIcon from "@mui/icons-material/Add";
 import logo from "../../images/music_logo.png";
@@ -12,22 +12,17 @@ import likeImg from "../../images/like.jpg";
 import styles from "./styles.module.scss";
 
 const Sidebar = () => {
-	const { playlists, getPlayListProgress, createPlayListProgress } =
-		useSelector((state) => state.playlists);
+	const { playlists, getPlayListProgress, createPlayListProgress } = useSelector((state) => state.playlists);
 	const { user } = useSelector((state) => state.auth);
-	const dispatch = useDispatch();
-
-	const handleCreatePlayList = () => {
-		const data = {
-			name: "My Playlist #" + (playlists.length + 1),
-			desc: "",
-			songs: [],
-			img: "",
-			usrid: user._id + "",
-			usrnm: "" + user.name,
-		};
-		createPlayList(data, dispatch);
-	};
+	const [model, setModel] = useState(false);
+	const playlist = {
+		name: "My Playlist #",
+		desc: "",
+		songs: [],
+		img: "",
+		usrid: user._id + "",
+		usrnm: user.name + "",
+	}
 
 	return (
 		<div className={styles.container}>
@@ -58,7 +53,7 @@ const Sidebar = () => {
 			</NavLink>
 			<div
 				className={styles.create_playlist_btn}
-				onClick={handleCreatePlayList}
+				onClick={() => setModel(true)}
 			>
 				<AddIcon />
 				<span>Create Playlist</span>
@@ -72,12 +67,15 @@ const Sidebar = () => {
 				<span>Liked Songs</span>
 			</NavLink>
 			<div className={styles.underline}></div>
+
+			{/* <div className={styles.playlist}> */}
 			{getPlayListProgress || createPlayListProgress ? (
 				<div className={styles.progress_container}>
 					<CircularProgress style={{ color: "#1ed760" }} size="3rem" />
 				</div>
 			) : (
 				<Fragment>
+					<div className={styles.playlist}>
 					{playlists.map((playlist) => (
 						<NavLink
 							key={playlist._id}
@@ -88,7 +86,16 @@ const Sidebar = () => {
 							{playlist.name}
 						</NavLink>
 					))}
+					</div>	
 				</Fragment>
+			)}
+			{/* </div> */}
+			{model && (
+				<PlaylistModel
+					closeModel={() => setModel(false)}
+					playlist={playlist}
+					isupdate = {false}
+				/>
 			)}
 		</div>
 	);

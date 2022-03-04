@@ -9,9 +9,13 @@
 
 	.playlists_container {
 		display: flex;
-		flex-wrap: wrap;
+		flex-wrap:nowrap;
 		justify-content: space-between;
 	}
+}
+
+::-webkit-scrollbar {
+	display: none;
 }
 .progress_container {
 	height: 90vh;

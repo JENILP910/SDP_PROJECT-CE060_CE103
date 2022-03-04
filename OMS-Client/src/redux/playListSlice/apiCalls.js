@@ -1,10 +1,8 @@
 import axiosInstance from "../axiosInstance";
 import { toast } from "react-toastify";
 import * as actions from "./index";
-const key = require('../../key');
 
-const apiUrl = key.apiurl + "/playlists";
-// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = "/playlists";
 
 export const createPlayList = async (payload, dispatch) => {
 	dispatch(actions.createPlayListStart());
@@ -65,7 +63,7 @@ export const getPlayLists = async (dispatch) => {
 export const deletePlayList = async (id, dispatch) => {
 	dispatch(actions.deletePlayListStart());
 	try {
-		console.log("Here")
+		// console.log("Here")
 		const { data } = await axiosInstance.delete(apiUrl + "/" + id);
 		dispatch(actions.deletePlayListSuccess(id));
 		toast.success(data.message);

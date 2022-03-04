@@ -2,12 +2,13 @@
 	width: 40rem;
 	min-height: 40rem;
 	background-color: var(--light-black);
+	color: var(--white);
 	border-radius: 1rem;
 	position: fixed;
 	top: calc(50% - 20rem);
 	left: calc(50% - 20rem);
 	z-index: 200;
-
+	
 	.close_btn {
 		position: absolute;
 		right: 0%;
@@ -19,7 +20,7 @@
 			color: var(--white);
 		}
 	}
-
+	
 	.form_container {
 		h1 {
 			font-size: 1.8rem;

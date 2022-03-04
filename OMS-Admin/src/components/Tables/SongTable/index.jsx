@@ -19,12 +19,29 @@ import styles from "./styles.module.scss";
 const SongTable = ({ songs }) => {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
+	const artists = [1, 2, 3];
 
 	setTimeout(() => setLoading(false), 1000);
 
 	const handleDelete = (id) => {
 		deleteSong(id, dispatch);
 	};
+
+	const Artist = ({ artists }) => {
+		let str;
+		if(artists[1] != null){
+			str = ", " + artists[1];
+			if(artists[2] != null)
+				str = ", " + artists[1] + ", " + artists[2];
+		}
+		
+		return (
+			<div>
+				{artists[0]}
+				{str}
+			</div>
+		)
+	}
 
 	return (
 		<TableContainer component={Paper} className={styles.table_container}>
@@ -61,7 +78,10 @@ const SongTable = ({ songs }) => {
 										<img className={styles.song_img} src={"../default.gif"} alt="" />
 									</TableCell>
 									<TableCell align="center">{song.name}</TableCell>
-									<TableCell align="center">{song.artist}</TableCell>
+									{/* <TableCell align="center">{song.artist}</TableCell> */}
+									<TableCell align="center">
+										<Artist artists={artists} />
+									</TableCell>
 									<TableCell align="center">
 										<Link to={`/songs/${song._id}`}>
 											<IconButton className={styles.edit_btn}>

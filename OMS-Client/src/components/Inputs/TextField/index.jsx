@@ -8,6 +8,7 @@ const TextField = ({
 	handleInputState,
 	handleErrorState,
 	schema,
+	maxlen,
 	...rest
 }) => {
 	const validateProperty = ({ name, value }) => {
@@ -34,6 +35,7 @@ const TextField = ({
 				className={
 					error ? `${styles.input} ${styles.error}` : `${styles.input} `
 				}
+				maxLength = {maxlen}
 			/>
 			{error && (
 				<p className={styles.error_msg}>
