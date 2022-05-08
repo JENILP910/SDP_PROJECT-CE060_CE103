@@ -79,7 +79,9 @@ router.put("/remove-song", auth, async (req, res) => {
 
 	const user = await User.findById(req.user._id);
 	const playlist = await PlayList.findById(req.body.playlistId);
-	if (!user._id.equals(playlist.user))
+	console.log(user._id);
+	console.log(playlist.usrid);
+	if (!user._id.equals(playlist.usrid))
 		return res.status(403)
 			.send({ message: "User don't have Access to Remove!" });
 
@@ -135,7 +137,7 @@ router.delete("/:id", [validateObjectId, auth], async (req, res) => {
 	const user = await User.findById(req.user._id);
 	const playlist = await PlayList.findById(req.params.id);
 	if (!user._id.equals(playlist.usrid)){
-		console.log("NOOO~del");
+		// console.log("NOOO~del");
 		return res.status(403).send({ message: "User don't have Access to Delete!" });
 	}
 	const index = user.playlists.indexOf(req.params.id);

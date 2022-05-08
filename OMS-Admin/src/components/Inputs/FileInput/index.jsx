@@ -15,15 +15,18 @@ const FileInput = ({
 	icon,
 	type,
 	handleInputState,
+	uploadfeedback,
 	...rest
 }) => {
 	const inputRef = useRef();
 	const [progress, setProgress] = useState(0);
 	const [progressShow, setProgressShow] = useState(false);
-
+	
 	const handleUpload = () => {
 		setProgressShow(true);
-		const fileName = new Date().getTime() + value.name;
+		const d = new Date();
+		const fileName = d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "_" 
+						+ d.getHours() + "_" + d.getMinutes() + "_" + d.getSeconds() + "_" + value.name;
 		const storageRef = ref(
 			storage,
 			type === "audio" ? `/audio/${fileName}` : `/images/${fileName}`
@@ -43,16 +46,18 @@ const FileInput = ({
 			},
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-					// handleInputState(name, url);
-					handleInputState(name, "s");
+					handleInputState((type === "audio") ? "song" : "img", url);
+					uploadfeedback(true);
+					// handleInputState(name, "s");
 					if (type === "audio") {
 						const audio = new Audio(url);
 						audio.addEventListener(
 							"loadedmetadata",
 							() => {
-								// const duration = Math.floor(audio.duration);
-								// handleInputState("duration", duration);
-								handleInputState("duration", 0);
+								const duration = Math.floor(audio.duration);
+								handleInputState("duration", duration);
+								console.log("~" + duration);
+								// handleInputState("duration", 0);
 							},
 							false
 						);
@@ -65,10 +70,14 @@ const FileInput = ({
 	return (
 		<div className={styles.container}>
 			<input
+				name={name}
 				type="file"
+				accept = {
+					(type === "image" ? "image/png, image/gif, image/jpeg" : "audio/mp3, audio/wav")
+				}
 				ref={inputRef}
-				// onChange={(e) => handleInputState(name, e.currentTarget.files[0])}
-				onChange={(e) => handleInputState(name, "s")}
+				onChange={(e) => handleInputState(name, e.currentTarget.files[0])}
+				// onChange={(e) => handleInputState(name, "s")}
 				vlaue={value}
 				{...rest}
 			/>

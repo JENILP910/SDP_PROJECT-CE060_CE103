@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import axiosInstance from "../../redux/axiosInstance";
 import Song from "../../components/Song";
 import Playlist from "../../components/Playlist";
@@ -6,8 +6,10 @@ import { IconButton, CircularProgress } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ClearIcon from "@mui/icons-material/Clear";
+import Button from "../../components/Button";
 import styles from "./styles.module.scss";
 import key from "../../key";
+import Filters from "./Filters";
 
 const apiurl = key.apiurl;
 
@@ -15,13 +17,25 @@ const Search = () => {
 	const [search, setSearch] = useState("");
 	const [results, setResults] = useState({});
 	const [isFetching, setIsFetching] = useState(false);
+	const [filter, setFilter] = useState("");
+	
+	const searchFilter = useRef();
+
+	const handleInputState = (value) => {
+		setFilter(value);
+	}
 
 	const handleSearch = async ({ currentTarget: input }) => {
 		setSearch(input.value);
+		// setSearch( searchFilter ? searchFilter + input.value : input.value);
+		console.log(searchFilter.current ? (searchFilter.current + input.value) : input.value);
+		console.log(filter ? (filter + input.value) : input.value);
 		setResults({});
 		try {
 			setIsFetching(true);
-			const url = apiurl + `/?search=${input.value}`;
+			// const url = apiurl + `/?search=${ searchFilter ? (searchFilter + input.value) : input.value}`;
+			// const url = apiurl + `/?search=${input.value}&sf=${searchFilter.current ? searchFilter.current : null }`;
+			const url = apiurl + `/?search=${input.value}&sf=${filter ? filter : null }`;
 			const { data } = await axiosInstance.get(url);
 			setResults(data);
 			setIsFetching(false);
@@ -39,16 +53,28 @@ const Search = () => {
 				</IconButton>
 				<input
 					type="text"
-					placeholder="Search for songs and playlists"
+					placeholder="Search for Artists, Songs and Playlists"
 					maxLength={24}
 					onChange={handleSearch}
 					value={search}
 					autoFocus
 				/>
-				<IconButton onClick={() => setSearch("")}>
+				<IconButton onClick={() => {setSearch(""); setFilter("")}}>
 					<ClearIcon />
 				</IconButton>
 			</div>
+			<div>
+				<Button
+					label="By Genre"
+					onClick={() => {searchFilter.current ? searchFilter.current=null : searchFilter.current="genre"}}
+				/>
+			</div>
+
+			<Filters
+				sFilter={"a"}
+				handleInputState={handleInputState}
+			/>
+
 			{isFetching && (
 				<div className={styles.progress_container}>
 					<CircularProgress style={{ color: "#1ed760" }} size="5rem" />

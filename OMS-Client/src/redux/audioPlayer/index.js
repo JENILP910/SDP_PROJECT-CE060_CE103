@@ -9,9 +9,12 @@ export const audioPlayer = createSlice({
 		setCurrentSong: (state, action) => {
 			state.currentSong = action.payload;
 		},
+		getCurrentSong: (state) => {
+			return (state.currentSong);
+		},
 	},
 });
 
-export const { setCurrentSong } = audioPlayer.actions;
+export const { getCurrentSong, setCurrentSong } = audioPlayer.actions;
 
 export default audioPlayer.reducer;

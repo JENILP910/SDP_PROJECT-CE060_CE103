@@ -38,6 +38,7 @@ export const addSongToPlaylist = async (payload, dispatch) => {
 export const removeSongFromPlaylist = async (payload, dispatch) => {
 	dispatch(actions.removeSongStart());
 	try {
+		// console.log("Here");
 		const { data } = await axiosInstance.put(apiUrl + "/remove-song", payload);
 		dispatch(actions.removeSongSuccess(data.data));
 		toast.success(data.message);

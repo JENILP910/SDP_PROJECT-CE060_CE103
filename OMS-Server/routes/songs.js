@@ -8,6 +8,9 @@ const validateObjectId = require("../middleware/validateObjectId");
 
 // Create song
 router.post("/c/", admin, async (req, res) => {
+	// console.log(typeof(req.body.artist));
+	// console.log(typeof(req.body.name));
+	// console.log(req.body);
 	const { error } = validate(req.body);
 	if (error) res.status(400).send({ message: error.details[0].message });
 	
@@ -16,13 +19,15 @@ router.post("/c/", admin, async (req, res) => {
 });
 
 // Get all songs
-router.get("/", async (req, res) => {
-	const songs = await Song.find();
+router.get("/a", async (req, res) => {
+	const songs = await (await Song.find()).reverse();
+	// console.log(typeof (songs));
 	res.status(200).send({ data: songs });
 });
 
 // Update song
 router.put("/:id", [validateObjectId, admin], async (req, res) => {
+	console.log("Update Song...");
 	const song = await Song.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 	});

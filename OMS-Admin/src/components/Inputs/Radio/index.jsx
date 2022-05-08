@@ -22,7 +22,7 @@ const RadioInput = ({
 				{options.map((option, index) => (
 					<FormControlLabel
 						key={index}
-						value={option}
+						value={option.option}
 						control={
 							<Radio
 								disableRipple
@@ -30,7 +30,7 @@ const RadioInput = ({
 								required={required}
 							/>
 						}
-						label={option}
+						label={option.option}
 						className={styles.radio_input}
 					/>
 				))}

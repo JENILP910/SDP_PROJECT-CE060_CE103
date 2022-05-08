@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config({ path: path.join(__dirname, '/.env') });
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_API_KEY,

@@ -8,6 +8,7 @@ const TextField = ({
 	handleInputState,
 	handleErrorState,
 	schema,
+	focus,
 	...rest
 }) => {
 	const validateProperty = ({ name, value }) => {
@@ -22,7 +23,8 @@ const TextField = ({
 			const errorMessage = validateProperty(input);
 			if (handleErrorState) handleErrorState(input.name, errorMessage);
 		}
-		console.log(input.name);
+		// console.log(input.name);
+		// console.log(input.value);
 		handleInputState(input.name, input.value);
 	};
 
@@ -32,6 +34,7 @@ const TextField = ({
 			<input
 				{...rest}
 				onChange={handleChange}
+				autoFocus={focus}
 				className={
 					error ? `${styles.input} ${styles.error}` : `${styles.input} `
 				}

@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import axiosInstance from "../../redux/axiosInstance";
 import { deletePlayList, removeSongFromPlaylist } from "../../redux/playListSlice/apiCalls";
+// import { setCurrentPlayList, setCurrentSong } from "../../redux/audioPlayer";
+import { setCurrentSong } from "../../redux/audioPlayer";
 import Song from "../../components/Song";
 import PlaylistModel from "../../components/PlaylistModel";
 import { IconButton, CircularProgress } from "@mui/material";
@@ -17,17 +19,23 @@ const Playlist = () => {
 	const [model, setModel] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
 	const { user } = useSelector((state) => state.auth);
+	// const { currentSongs } = useSelector((state) => state.audioPlayer);
+	const { currentSong } = useSelector((state) => state.audioPlayer);
 	const dispatch = useDispatch();
 	const { id } = useParams();
 
 	const history = useHistory();
 
 	const getPlaylistSongs = async (id) => {
+		// console.log("Feteching...");
+		// console.log(data.data.playlist);
 		try {
 			setIsFetching(true);
 			const url = process.env.REACT_APP_API_URL + "/playlists/" + id;
 			const { data } = await axiosInstance.get(url);
 			setPlaylist(data.data.playlist);
+			console.log(data.data.playlist.name);
+			console.log(data.data.songs);
 			setSongs(data.data.songs);
 			setIsFetching(false);
 		} catch (error) {
@@ -42,6 +50,7 @@ const Playlist = () => {
 	};
 
 	const handleRemoveSong = async (songId) => {
+		console.log(songId);
 		const originalSongs = [...songs];
 		const payload = { playlistId: playlist._id, songId };
 		const filterSongs = originalSongs.filter((song) => song._id !== songId);
@@ -49,6 +58,39 @@ const Playlist = () => {
 		const res = await removeSongFromPlaylist(payload, dispatch);
 		!res && setSongs(originalSongs);
 	};
+
+	const handleOnClick = async (songId) => {
+		// console.log("here->  ");
+		// console.log(currentSongs);
+		console.log("click here--->  ");
+		// console.log(songs);
+		const song = songs.filter((song) => song._id === songId);
+		const sIndex = songs.findIndex((song) => song._id === songId);
+		console.log(song[0]);
+
+		// const payloadl = {
+		// 	song: songs,
+		// 	action: "active",
+		// };
+		// setCurrentPlayList(payloadl);
+		if (currentSong && currentSong.action === "play") {
+			const payload = {
+				playlist: songs,
+				song: song[0],
+				sId: sIndex,
+				action: "play",
+			};
+			dispatch(setCurrentSong(payload));
+		} else {
+			const payload = {
+				playlist: songs,
+				song: song[0],
+				sId: sIndex,
+				action: "play",
+			};
+			dispatch(setCurrentSong(payload));
+		}
+	}
 
 	useEffect(() => {
 		getPlaylistSongs(id);
@@ -72,7 +114,11 @@ const Playlist = () => {
 								style={{ background: "#919496" }}
 							/>
 						) : (
-							<img src={"../images/playlistimg/" + playlist.img} alt={playlist.name} />
+							<img 
+								src={playlist.img ? ((playlist.img).indexOf("http") ? "../images/playlistimg/"
+								+ playlist.img : playlist.img) : "../default.gif"} alt={currentSong.song.name}
+								// src={"../images/playlistimg/" + playlist.img} alt={playlist.name} 
+							/>
 							)}
 
 						<div className={styles.playlist_info}>
@@ -110,6 +156,7 @@ const Playlist = () => {
 									song={song}
 									playlist={playlist}
 									handleRemoveSong={handleRemoveSong}
+									handleOnClick={handleOnClick}
 								/>
 							</Fragment>
 						))}

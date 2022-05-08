@@ -8,6 +8,7 @@ const apiurl = key.apiurl;
 export const createSong = async (song, dispatch) => {
 	dispatch(actions.createSongStart());
 	try {
+		// console.log((song.song));
 		const { data } = await axiosInstance.post( apiurl + "/songs/c/", song);
 		dispatch(actions.createSongSuccess(data.data));
 		toast.success(data.message);
@@ -21,7 +22,7 @@ export const createSong = async (song, dispatch) => {
 export const getAllSongs = async (dispatch) => {
 	dispatch(actions.getAllSongsStart());
 	try {
-		const { data } = await axiosInstance.get( apiurl + "/songs");
+		const { data } = await axiosInstance.get( apiurl + "/songs/a");
 		dispatch(actions.getAllSongsSuccess(data.data));
 		return true;
 	} catch (error) {
@@ -33,6 +34,7 @@ export const getAllSongs = async (dispatch) => {
 export const updateSong = async (id, song, dispatch) => {
 	dispatch(actions.updateSongStart());
 	try {
+		console.log(song);
 		const { data } = await axiosInstance.put( apiurl + `/songs/${id}`, song);
 		dispatch(actions.updateSongSuccess(data.data));
 		toast.success(data.message);

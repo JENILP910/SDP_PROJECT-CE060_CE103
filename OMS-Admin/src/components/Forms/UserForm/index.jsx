@@ -70,9 +70,9 @@ const UserForm = () => {
 			setData({
 				email: user[0].email,
 				name: user[0].name,
+				date: user[0].date,
 				month: user[0].month,
 				year: user[0].year,
-				date: user[0].date,
 				gender: user[0].gender,
 			});
 		}
@@ -145,6 +145,16 @@ const UserForm = () => {
 					<div className={styles.date_of_birth_container}>
 						<p>What's your date of birth?</p>
 						<div className={styles.date_of_birth}>
+							<div className={styles.date}>
+								<TextField
+									label="Date"
+									placeholder="DD"
+									name="date"
+									value={data.date}
+									handleInputState={handleInputState}
+									required={true}
+								/>
+							</div>
 							<div className={styles.month}>
 								<Select
 									name="month"
@@ -153,16 +163,6 @@ const UserForm = () => {
 									placeholder="Months"
 									options={months}
 									value={data.month}
-									required={true}
-								/>
-							</div>
-							<div className={styles.date}>
-								<TextField
-									label="Date"
-									placeholder="DD"
-									name="date"
-									value={data.date}
-									handleInputState={handleInputState}
 									required={true}
 								/>
 							</div>

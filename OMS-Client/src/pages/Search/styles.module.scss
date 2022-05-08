@@ -113,4 +113,16 @@
 			background-color: var(--light-white);
 		}
 	}
+
+	.filter_container{
+		color: aqua;
+		font-size: 1.6rem;
+		font-weight: 500;
+
+		ul{
+			display: inline;
+			// padding: 0 3rem;
+			padding-top: 3rem;
+		}
+	}
 }

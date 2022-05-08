@@ -10,12 +10,17 @@ const Playlist = ({ playlists }) => {
 					<div className={styles.playlist}>
 						{playlist.img === "" ? (
 							<img
+								
 								src="../../images/playlistimg/MusicPlaylist.jpg"
 								alt={playlist.name}
 								style={{ background: "#919496" }}
 							/>
 						) : (
-							<img src = {"../images/playlistimg/" + playlist.img} alt={playlist.name} />
+							<img 
+								src={playlist.img ? ((playlist.img).indexOf("http") ? "../images/playlistimg/"
+								+ playlist.img : playlist.img) : "../default.gif"} alt={playlist.name}
+								// src = {"../images/playlistimg/" + playlist.img} alt={playlist.name}
+							/>
 						)}
 						<p>{playlist.name}</p>
 						<span>By {playlist.usrnm}</span>

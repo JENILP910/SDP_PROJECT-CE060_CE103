@@ -21,8 +21,8 @@ const Navbar = () => {
 	const history = useHistory();
 
 	const handleLogout = () => {
-		dispatch(logout());
 		dispatch(setCurrentSong(null));
+		dispatch(logout());
 		history.push("/login")
 		// window.location = "/login";
 	};

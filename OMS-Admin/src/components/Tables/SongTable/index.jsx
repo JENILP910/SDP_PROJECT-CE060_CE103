@@ -19,7 +19,11 @@ import styles from "./styles.module.scss";
 const SongTable = ({ songs }) => {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
-	const artists = [1, 2, 3];
+	// const artists = [1, 2, 3];
+	// const artists = songs.artist;
+	// console.log(songs)
+	// console.log(songs[0])
+	// console.log(songs.artist)
 
 	setTimeout(() => setLoading(false), 1000);
 
@@ -28,17 +32,17 @@ const SongTable = ({ songs }) => {
 	};
 
 	const Artist = ({ artists }) => {
-		let str;
-		if(artists[1] != null){
+		let str = "";
+		if(artists[1] != null && artists[1] !== ""){
 			str = ", " + artists[1];
-			if(artists[2] != null)
+			if(artists[2] != null  && artists[2] !== "")
 				str = ", " + artists[1] + ", " + artists[2];
 		}
 		
 		return (
 			<div>
-				{artists[0]}
-				{str}
+				{artists[0] + str}
+				{/* {str} */}
 			</div>
 		)
 	}
@@ -75,12 +79,14 @@ const SongTable = ({ songs }) => {
 								<TableRow key={song._id}>
 									<TableCell align="center">
 										{/* <img className={styles.song_img} src={song.img} alt="" /> */}
-										<img className={styles.song_img} src={"../default.gif"} alt="" />
+										<img className={styles.song_img} src={
+											song.img ? ((song.img).indexOf("http") ? "../../images/songsimg/" + song.img : song.img) : "../default.gif"
+											} alt="" />
 									</TableCell>
 									<TableCell align="center">{song.name}</TableCell>
 									{/* <TableCell align="center">{song.artist}</TableCell> */}
 									<TableCell align="center">
-										<Artist artists={artists} />
+										<Artist artists={song.artist} />
 									</TableCell>
 									<TableCell align="center">
 										<Link to={`/songs/${song._id}`}>
